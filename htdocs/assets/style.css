@@ -1,0 +1,204 @@
+/* ---------------------------------------
+   PROFESSIONAL BLOG EDITOR STYLING
+--------------------------------------- */
+
+/* Global Page */
+body {
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #eef2f3 0%, #d9e4f5 100%);
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container for editor + preview */
+.editor-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  width: 95%;
+  max-width: 1400px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #81a4f1cc; /* Slightly transparent for modern look */
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.editor-container:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Left: Form */
+.editor-container form {
+  flex: 1;
+  background: #fdfdfd;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  transition: all 0.3s ease;
+}
+
+/* Labels */
+label {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Title Field */
+input[name="title"] {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 18px;
+  border: 2px solid #d0d8ff;
+  border-radius: 10px;
+  background: #f7f9ff;
+  transition: all 0.2s ease;
+  margin-bottom: 16px;
+}
+
+input[name="title"]:focus {
+  border-color: #5a73f5;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(90, 115, 245, 0.3);
+  outline: none;
+}
+
+/* Textarea */
+textarea#content {
+  flex: 1;
+  width: 100%;
+  font-family: "Fira Code", "Segoe UI", monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 12px 14px;
+  border: 2px solid #d0d8ff;
+  border-radius: 10px;
+  background: #f9faff;
+  resize: none;
+  color: #2c3e50;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+textarea#content:focus {
+  border-color: #5a73f5;
+  box-shadow: 0 0 8px rgba(90, 115, 245, 0.3);
+  outline: none;
+}
+
+/* Buttons */
+.editor-actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+button[type="submit"] {
+  background: linear-gradient(135deg, #5a73f5, #6b9dfc);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 26px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(135deg, #4762eb, #5a8bf9);
+  transform: translateY(-2px);
+}
+
+.cancel-btn {
+  background: #f1f2f6;
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #e4e5e9;
+  transform: translateY(-2px);
+}
+
+/* Right: Preview */
+#preview {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 25px;
+  height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+#preview h1, #preview h2, #preview h3 {
+  color: #1e2b78;
+}
+
+#preview p {
+  color: #333;
+  line-height: 1.8;
+}
+
+#preview code {
+  background: #eef1ff;
+  padding: 2px 6px;
+  border-radius: 5px;
+  color: #222;
+}
+
+/* ----------------------------
+   RESPONSIVE MOBILE STYLING
+---------------------------- */
+@media (max-width: 900px) {
+  .editor-container {
+    flex-direction: column;
+    gap: 25px;
+    padding: 20px;
+  }
+
+  .editor-container form,
+  #preview {
+    width: 100%;
+    height: auto; /* auto-adjust height */
+  }
+
+  input[name="title"] {
+    font-size: 16px;
+    padding: 10px 12px;
+  }
+
+  textarea#content {
+    font-size: 15px;
+    padding: 10px 12px;
+  }
+
+  button[type="submit"],
+  .cancel-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .editor-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
