@@ -1,28 +1,28 @@
 <?php
-// delete_post.php
+
 
 // include authentication, database connection, and helper functions
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/functions.php';
 
-// ensure the user is logged in
+// ensure the user is loggedin
 $user = requireAuth();
 
-// allow only POST requests
+// allow only post requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: index.php');
     exit;
 }
 
-// get CSRF token from the submitted form
+// get csrf token
 $token = $_POST['csrf_token'] ?? '';
 if (!validate_csrf($token)) {
     echo "Invalid CSRF token.";
     exit;
 }
 
-// get post ID to delete
+// tke post id to delete
 $post_id = $_POST['post_id'] ?? null;
 if (!$post_id) {
     echo "No post specified.";
