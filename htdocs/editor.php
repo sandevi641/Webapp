@@ -1,61 +1,82 @@
 <?php
-// editor.php
+
+// load required 
 
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/functions.php';
 
+// Make sure the user is loggedin before using the page
 $user = requireAuth();
 
-$post = null;
-$isEdit = false;
+
+// Setup variables
+
+$post = null;       
+$isEdit = false;   
+
+
 
 if (!empty($_GET['post_id'])) {
     $stmt = $pdo->prepare("SELECT * FROM blogPost WHERE id = ?");
     $stmt->execute([$_GET['post_id']]);
     $post = $stmt->fetch();
 
+    // if the post doesn’t exist, stop and show message
     if (!$post) {
         echo "Post not found.";
         exit;
     }
 
+    // prevent users from editing others post
     if ($post['user_id'] != $user['id']) {
         echo "Not authorized.";
         exit;
     }
 
-    $isEdit = true;
+    $isEdit = true; 
 }
 
+
+// handle form submission 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // get form input values
+
+
     $title = $_POST['title'];
     $content = $_POST['content'];
-    $imagePath = $post['image'] ?? null;
+    $imagePath = $post['image'] ?? null; 
 
-    // Handle image upload
+    
     if (!empty($_FILES['image']['name'])) {
         $uploadDir = __DIR__ . '/uploads/';
-        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true); // create folder if missing
 
-        $filename = time() . '_' . basename($_FILES['image']['name']);
+        $filename = time() . '_' . basename($_FILES['image']['name']); 
         $targetFile = $uploadDir . $filename;
 
         $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
         $allowedTypes = ['jpg','jpeg','png','gif'];
 
+        // Check if file type is allowed
         if (in_array($imageFileType, $allowedTypes)) {
+          
+            // Try moving uploaded file to uploads folder
             if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
-                $imagePath = 'uploads/' . $filename;
+
+                $imagePath = 'uploads/' . $filename; // Save relative path to DB
             } else {
                 echo "Error uploading image.";
             }
         } else {
-            echo "Invalid file type. Only JPG, PNG, GIF allowed.";
+            echo "Invalid file type. Only JPG, PNG, and GIF are allowed.";
         }
     }
 
-    // Insert or update post
+    
+    // save post update if editing, or insert if creating new one
+   
     if ($isEdit) {
         $stmt = $pdo->prepare("UPDATE blogPost SET title = ?, content = ?, image = ? WHERE id = ?");
         $stmt->execute([$title, $content, $imagePath, $post['id']]);
@@ -64,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$title, $content, $user['id'], $imagePath]);
     }
 
+    // go back to homepage after saving
     header('Location: index.php');
     exit;
 }
@@ -89,6 +111,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </header>
 
 <main class="container">
+
+
   <h2><?php echo $isEdit ? 'Edit Post' : 'Create New Post'; ?></h2>
 
   <div class="editor-container">
@@ -114,12 +138,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <h3 class="preview-title">Live Preview</h3>
     <div id="preview" class="preview-box">
+
       <?php if ($isEdit) echo markdown_to_html($post['content']); ?>
     </div>
   </div>
 
 </main>
 
+
+
 <script src="assets/app.js"></script>
 </body>
+
+
+
 </html>
