@@ -9,6 +9,4 @@
 
 4. Open http://localhost:8080
 
- Uses PHP sessions and optional "remember me" cookie token
- No external libraries — a minimal Markdown converter included
- Keep `.env` outside webroot in production.
+ 
